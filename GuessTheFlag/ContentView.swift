@@ -17,7 +17,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack{
-            LinearGradient(gradient: Gradient(colors: [.mint, .blue]), startPoint: .top, endPoint: .bottom)
+            LinearGradient(gradient: Gradient(colors: [.indigo, .blue]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             VStack(spacing: 40){
                 VStack{
@@ -33,7 +33,7 @@ struct ContentView: View {
                     }label: {
                         Image(countries[number])
                             .renderingMode(.original)
-                            .cornerRadius(5)
+                            .cornerRadius(4)
                             .shadow(radius: 5)
                     }
                 }
