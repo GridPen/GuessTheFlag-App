@@ -15,6 +15,9 @@ struct ContentView: View {
     @State private var playerScore = 0
     
     @State private var rotationAmount = 0.0
+    @State private var opacityCount = false
+    @State private var scaleSmall = false
+    
     
     
     var body: some View {
@@ -27,26 +30,30 @@ struct ContentView: View {
                     Text(countries[correctAnswer])
                         .font(.largeTitle.weight(.semibold))
                         .foregroundStyle(.secondary)
-                        
+                    
                 }
                 ForEach(0..<3) {number in
                     Button{
                         ansTapped(number)
+                            
                     }label: {
                         Image(countries[number])
                             .renderingMode(.original)
                             .cornerRadius(4)
                             .shadow(radius: 5)
+                        
                     }
+                    
+                    .opacity(self.showingScore && number != self.correctAnswer ? 0.40 : 1.0)
+                    .scaleEffect (withAnimation(.default){self.showingScore && number != self.correctAnswer ? 0.9 : 1})
                     .rotation3DEffect(.degrees(number == self.correctAnswer ? self.rotationAmount : 0), axis: (x: 0, y: 1, z: 0))
-
+                    
                 }
-
+                
             }
-
+            
         }
-        
-        .alert(scoreTitle, isPresented: $showingScore){
+        .alert(scoreTitle, isPresented: $showingScore) {
             Button("Next Quiz", action: refresh)
         }message: {
             Text("Your Score is \(playerScore)")
@@ -54,24 +61,28 @@ struct ContentView: View {
     }
     
     
-
     
-    func ansTapped(_ number : Int){
+    
+    func ansTapped(_ number : Int) {
         if correctAnswer == number{
             showingScore = true
             scoreTitle = "Correct Answer!"
             playerScore += 1
+            opacityCount = true
+            scaleSmall = true
             withAnimation(.spring()) {
-                            self.rotationAmount += 360.0
-                        }
-
+                self.rotationAmount += 360.0
+            }
+            
         }else{
             scoreTitle = "Wrong Answer"
             playerScore -= 1
             showingScore = true
+            
+
         }
     }
-    func refresh(){
+    func refresh() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
@@ -84,4 +95,13 @@ struct ContentView: View {
     }
     
 }
+
+
+
+
+
+
+
+
+
 
