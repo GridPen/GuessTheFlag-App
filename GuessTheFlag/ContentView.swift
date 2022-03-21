@@ -14,6 +14,8 @@ struct ContentView: View {
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var playerScore = 0
     
+    @State private var rotationAmount = 0.0
+    
     
     var body: some View {
         ZStack{
@@ -36,6 +38,8 @@ struct ContentView: View {
                             .cornerRadius(4)
                             .shadow(radius: 5)
                     }
+                    .rotation3DEffect(.degrees(number == self.correctAnswer ? self.rotationAmount : 0), axis: (x: 0, y: 1, z: 0))
+
                 }
 
             }
@@ -57,11 +61,14 @@ struct ContentView: View {
             showingScore = true
             scoreTitle = "Correct Answer!"
             playerScore += 1
+            withAnimation(.spring()) {
+                            self.rotationAmount += 360.0
+                        }
+
         }else{
             scoreTitle = "Wrong Answer"
             playerScore -= 1
             showingScore = true
-
         }
     }
     func refresh(){
